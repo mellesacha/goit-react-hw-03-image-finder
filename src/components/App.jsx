@@ -7,38 +7,42 @@ import fetchApi from "../service/Fetchapi";
 export class App extends Component {
 
   state = {
-    search: "", 
+    search: "",
     picture: '',
     page: 1,
   }
 
   handleSubmit = (query) => {
     this.setState({ search: query });
-    const { page, search } = this.state;
-     
-    fetchApi(search, page).then(r => this.setState({ picture: r.hits }))
+
+    console.log(this.state.search)
     
-    console.log(search)
   }
 
-  handleBtnclick = () => {
-    this.setState(prevState =>
-    {
+  handleBtnClick = () => {
+    this.setState(prevState => {
       return {
-      page: prevState.page + 1
+        page: prevState.page + 1
       }
      
     })
   }
   componentDidUpdate(prevProps, prevState) {
     
-    const {search, page} = this.state;
+    const { search, page } = this.state;
     const prevPage = prevState.page;
+    const prevSearch = prevState.search;
+
+    console.log(search)
+    console.log(prevSearch);
 
 
-      if (page !== prevPage) {
-        fetchApi(search, page).then(r => this.setState(ps => { return {picture: [...ps.picture, ...r.hits]}}));
-      }
+    if (search !== prevSearch || page !== prevPage) {
+        fetchApi(search, page).
+          then(r => this.setState(ps => { return { picture: [...ps.picture, ...r.hits] } }));
+    }
+    
+   
     }
   
 
@@ -46,7 +50,7 @@ export class App extends Component {
     return (<>
       <Searchbar onSubmit={this.handleSubmit}  />
       <ImageGallery picture={this.state.picture} />
-      <Button handleBtnclick={this.handleBtnclick } />
+      <Button handleBtnClick={this.handleBtnClick } />
     </>
     
   );
