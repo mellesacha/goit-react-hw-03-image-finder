@@ -43,36 +43,10 @@ componentDidUpdate(_, prevState) {
           this.setState({ loader: false })
         }
 
-        { hits && this.setState({ loader: false }) }
+        hits && this.setState({ loader: false }) 
       }
       
       ).catch(error => console.log(`Oops! Something went wrong! ${error}`))
-
-
-      // try {
-      //   this.setState({ loader: true });
-
-      //   const { totalHits, hits } = await fetchApi(search, page);
-
-      //   if (totalHits === 0) {
-      //     console.log('Nothing was found for your request');
-      //     this.setState({ loader: false });
-      //     return;
-      //   }
-
-      //   this.setState(prevState => ({
-      //     picture: page === 1 ? hits : [...prevState.picture, ...hits],
-
-      //     totalHits:
-      //       page === 1
-      //         ? totalHits - hits.length
-      //         : totalHits - [...prevState.picture, ...hits].length,
-      //   }));
-
-      //   this.setState({ loader: false });
-      // } catch (error) {
-      //   console.log(`Oops! Something went wrong! ${error}`);
-      // }
     }
     }
 
