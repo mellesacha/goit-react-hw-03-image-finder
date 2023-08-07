@@ -1,4 +1,7 @@
 import { Component } from "react";
+import PropTypes from 'prop-types';
+import { SearchForm, Button, ButtonLabel, Input, Header } from "./Searchbar.styled";
+import { FiSearch } from "react-icons/fi";
 
 class Searchbar extends Component {
 state = {
@@ -8,7 +11,6 @@ state = {
     handlInput = (e) => {
     const { value } = e.target;
         this.setState({ search: value });
-        console.log(this.state.search)
     }
     
     handlSubmit = (e) => {
@@ -26,13 +28,14 @@ state = {
   };
 
     render() {
-return (<header className="searchbar">
-        <form className="form" onSubmit={this.handlSubmit}>
-            <button type="submit" className="button">
-                <span className="button-label">Search</span>
-            </button>
+return (<Header>
+        <SearchForm onSubmit={this.handlSubmit}>
+            <Button type="submit">
+            <ButtonLabel><FiSearch /></ButtonLabel>
+           
+            </Button>
 
-            <input
+            <Input
                 className="input"
                 type="text"
                 autoComplete="off"
@@ -40,10 +43,14 @@ return (<header className="searchbar">
                 placeholder="Search images and photos"
                 onChange={this.handlInput}
             />
-        </form>
-    </header>)
+        </SearchForm>
+    </Header>)
     }
     
 };
 
 export default Searchbar;
+
+Searchbar.propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+}

@@ -4,6 +4,9 @@ import ImageGallery from "./ImageGallery";
 import Button from "./Button";
 import Loader from "./Loader";
 import fetchApi from "../service/Fetchapi";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { PhotoFinder } from "./App.styled";
 
 
 export class App extends Component {
@@ -39,7 +42,7 @@ componentDidUpdate(_, prevState) {
         this.setState(prevState => { return { picture: [...prevState.picture, ...hits] } });
 
         if (totalHits === 0) {
-          console.log('Повторите запрос')
+          toast('Nothing found for your request')
           this.setState({ loader: false })
         }
 
@@ -47,6 +50,8 @@ componentDidUpdate(_, prevState) {
       }
       
       ).catch(error => console.log(`Oops! Something went wrong! ${error}`))
+      
+    
     }
     }
 
@@ -54,12 +59,13 @@ componentDidUpdate(_, prevState) {
   render() {
 
     const { loader, picture } = this.state;
-    return (<>
+    return (<PhotoFinder>
       <Searchbar onSubmit={this.handleSubmit} />
       <ImageGallery picture={this.state.picture}/>
       {picture.length !==0 && <Button handleBtnClick={this.handleBtnClick} />}
       {loader && <Loader />}
-    </>
+      <ToastContainer />
+    </PhotoFinder>
     
   );
   }
