@@ -19,7 +19,7 @@ export class App extends Component {
   }
 
   handleSubmit = (query) => {
-    this.setState({ search: query, page: 1, picture: [], loader: true })
+    this.setState({ search: query, page: 1, picture: [] })
   }
 
   handleBtnClick = () => {
@@ -35,7 +35,9 @@ componentDidUpdate(_, prevState) {
     const { search, page} = this.state;
   
 
-    if (search !== prevState.search || page !== prevState.page) {
+  if (search !== prevState.search || page !== prevState.page) {
+
+       this.setState({loader: true})
    
       fetchApi(search, page).then(({ totalHits, hits }) => {
 
