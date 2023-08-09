@@ -15,7 +15,8 @@ export class App extends Component {
     search: "",
     picture: [],
     page: 1,
-    loader: false
+    loader: false,
+    btnLoad: false
   }
 
   handleSubmit = (query) => {
@@ -41,18 +42,27 @@ componentDidUpdate(_, prevState) {
    
       fetchApi(search, page).then(({ totalHits, hits }) => {
 
+
         this.setState(prevState => { return { picture: [...prevState.picture, ...hits] } });
 
         if (totalHits === 0) {
           toast('Nothing found for your request')
-          this.setState({ loader: false })
+          return
         }
 
-        hits && this.setState({ loader: false }) 
+        if ( page < Math.ceil(totalHits / 12)) {
+          this.setState({ btnLoad: true })
+        }
+
+        else this.setState({ btnLoad: false })
+
+        console.log(hits)
+        console.log(totalHits)
+       
       }
       
-      ).catch(error => console.log(`Oops! Something went wrong! ${error}`))
-      
+      ).catch(error => console.log(`Oops! Something went wrong! ${error}`)).finally(() => this.setState({loader: false}))
+    
     
     }
     }
@@ -60,11 +70,12 @@ componentDidUpdate(_, prevState) {
   
   render() {
 
-    const { loader, picture } = this.state;
+    const { loader, picture, btnLoad } = this.state;
     return (<PhotoFinder>
       <Searchbar onSubmit={this.handleSubmit} />
-      <ImageGallery picture={this.state.picture}/>
-      {picture.length !==0 && <Button handleBtnClick={this.handleBtnClick} />}
+      <ImageGallery picture={this.state.picture} />
+      {btnLoad  && <Button handleBtnClick={this.handleBtnClick}/>}
+      {/* {picture.length !==0 && <Button handleBtnClick={this.handleBtnClick} />} */}
       {loader && <Loader />}
       <ToastContainer />
     </PhotoFinder>

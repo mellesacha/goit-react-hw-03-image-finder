@@ -23,8 +23,8 @@ state = {
         };
 
         this.props.onSubmit(search);
+        this.setState({search: ''})
     
-        e.target.reset();
   };
 
     render() {
@@ -37,7 +37,8 @@ return (<Header>
 
             <Input
                 className="input"
-                type="text"
+            type="text"
+            value={this.state.search}
                 autoComplete="off"
                 autoFocus
                 placeholder="Search images and photos"
