@@ -31,6 +31,11 @@ export class App extends Component {
      
     })
   }
+
+  selectElImagesArr = (arr) => {
+    return arr.map(({ id, webformatURL, largeImageURL, tags }) => { return ({ id, webformatURL, largeImageURL, tags }) })
+}
+
 componentDidUpdate(_, prevState) {
     
     const { search, page} = this.state;
@@ -43,7 +48,7 @@ componentDidUpdate(_, prevState) {
       fetchApi(search, page).then(({ totalHits, hits }) => {
 
 
-        this.setState(prevState => { return { picture: [...prevState.picture, ...hits] } });
+        this.setState(prevState => { return { picture: [...prevState.picture, ...this.selectElImagesArr(hits)] } });
 
         if (totalHits === 0) {
           toast('Nothing found for your request')
@@ -55,9 +60,6 @@ componentDidUpdate(_, prevState) {
         }
 
         else this.setState({ btnLoad: false })
-
-        console.log(hits)
-        console.log(totalHits)
        
       }
       
@@ -73,9 +75,8 @@ componentDidUpdate(_, prevState) {
     const { loader, picture, btnLoad } = this.state;
     return (<PhotoFinder>
       <Searchbar onSubmit={this.handleSubmit} />
-      <ImageGallery picture={this.state.picture} />
+      <ImageGallery picture={picture} />
       {btnLoad  && <Button handleBtnClick={this.handleBtnClick}/>}
-      {/* {picture.length !==0 && <Button handleBtnClick={this.handleBtnClick} />} */}
       {loader && <Loader />}
       <ToastContainer />
     </PhotoFinder>
